@@ -58,3 +58,24 @@
     margin-bottom: 20px;
     width: 80em;
 }
+
+.card-title-with-delete {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+}
+
+.card-header {
+    text-align: left;
+}
+
+.left-div {
+    flex: 1;
+    text-align: left;
+    margin-left: 1em;
+}
+
+.right-div {
+    text-align: right;
+    margin-right: 1em;
+}

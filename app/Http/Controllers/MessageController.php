@@ -6,6 +6,7 @@ use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
 use App\Models\Message;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 
@@ -16,10 +17,22 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): View
+    public function index(FormRequest $request): View
     {
         //
-        $messages = Message::all();
+
+        if (isset($request->search)) {
+            $query = $request->search_query;
+            $column_name = $request->column;
+            $messages = Message::where("title", "like", "%$query%")
+                            ->orWhere("message", "like", "%$query%")
+                            ->orderBy($column_name)
+                            ->get();
+        }
+        else {
+            $messages = Message::all();
+        }
+        
         return view('messages', ['messages' => $messages]);
     }
 
@@ -43,14 +56,11 @@ class MessageController extends Controller
     public function store(StoreMessageRequest $request) : RedirectResponse
     {
         //
-        $message = new Message();
-        $message->title = $request->title;
-        $message->message = $request->message;
+        $message = new Message($request->except('_token'));
         $message->sender_id = 1; // auth()->user()->id;
-        $message->recipient_id = $request->recipient;
-        $message->attachment = 'none';
-
+        $message->attachment = "";
         $message->save();
+
         return Redirect::route('view_messages')->with([
             'success' => [
                 'Message has been sent!',
@@ -98,8 +108,15 @@ class MessageController extends Controller
      * @param  \App\Models\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Message $message)
+    public function destroy(Message $message) : RedirectResponse
     {
         //
+        $message_id = $message->id;
+        $message->delete();
+        return Redirect::route('view_messages')->with([
+            'success' => [
+                "Message with ID $message_id has been deleted.",
+            ]
+        ]);
     }
 }

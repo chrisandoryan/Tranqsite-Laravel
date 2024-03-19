@@ -18,6 +18,7 @@ Route::prefix('/message')->group(function() {
     Route::get('/', [MessageController::class, 'index'])->name('view_messages');
     Route::get('/send', [MessageController::class, 'create'])->name('send_message_page');
     Route::post('/send', [MessageController::class, 'store'])->name('send_message');
+    Route::get('/delete/{message}', [MessageController::class, 'destroy']);
 });
 
 Route::get('/login', function () {
