@@ -1,1 +1,5 @@
-<div class="alert alert-success">Wow</div>
+@isset($success)
+@foreach ($success as $s)
+    <div class="alert alert-success">{{ $s }}</div>
+@endforeach
+@endisset

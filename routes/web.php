@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('messages');
+Route::prefix('/message')->group(function() {
+    Route::get('/', [MessageController::class, 'index'])->name('view_messages');
+    Route::get('/send', [MessageController::class, 'create'])->name('send_message_page');
+    Route::post('/send', [MessageController::class, 'store'])->name('send_message');
 });
 
 Route::get('/login', function () {

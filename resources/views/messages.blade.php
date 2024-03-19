@@ -11,21 +11,24 @@
 
 <body class="hack dark">
 
-
-        <div class="grid main-form">
-
-            <div>
-                <div class="card">
-                    <header class="card-header">To: Ryan</header>
-                    <header class="card-header">Hehe</header>
-                    <div class="card-content">
-                        <div class="inner">Haha</div>
-                    </div>
+    <div class="grid main-form">
+        @if ($messages->isEmpty())
+            <div class="alert alert-warning">No messages found.</div>
+        @endif
+        @foreach ($messages as $m)
+        <div>
+            <div class="card">
+                <header class="card-header">To: {{ $m->sender_id }}</header>
+                <header class="card-header">{{ $m->title }}</header>
+                <div class="card-content">
+                    <div class="inner">{{ $m->message }}</div>
                 </div>
             </div>
-    </body>
+        </div>
+        @endforeach
+</body>
 
-    </html>
+</html>
 </body>
 
 </html>
