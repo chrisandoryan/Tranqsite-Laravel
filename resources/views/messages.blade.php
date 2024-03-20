@@ -24,7 +24,7 @@
     </div>
     <br />
     <div class="grid main-form">
-        @if ($messages->isEmpty())
+        @if (empty($messages))
         <div class="alert alert-warning">No messages found.</div>
         @endif
         @foreach ($messages as $m)

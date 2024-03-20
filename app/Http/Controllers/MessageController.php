@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class MessageController extends Controller
@@ -25,8 +26,8 @@ class MessageController extends Controller
         if (isset($request->search)) {
             $query = $request->search_query;
             $column_name = $request->column;
-            $messages = Message::where("title", "like", "%$query%")
-                            ->orWhere("message", "like", "%$query%")
+            $messages = Message::where(DB::raw("title LIKE '%$query%'"))
+                            ->orWhere(DB::raw("message LIKE '%$query%'"))
                             ->orderBy($column_name)
                             ->get();
         }
