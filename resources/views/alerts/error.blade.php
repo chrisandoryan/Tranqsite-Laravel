@@ -1,5 +1,3 @@
-@isset($error)
-    @foreach ($error as $e)
-    <div class="alert alert-error">{{ $e }}</div>
-    @endforeach    
-@endisset
+@foreach ($errors->all() as $error)
+    <div class="alert alert-error">{{ $error }}</div>
+@endforeach

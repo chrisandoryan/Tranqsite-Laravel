@@ -65,8 +65,9 @@
     align-items: left;
 }
 
-.card-header {
-    text-align: left;
+.message-title {
+    text-align: left !important;
+    margin-left: 1em !important;
 }
 
 .left-div {

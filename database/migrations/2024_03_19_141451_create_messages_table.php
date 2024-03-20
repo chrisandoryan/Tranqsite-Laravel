@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('recipient_id');
             $table->string('title');
             $table->string('message');
-            $table->string('attachment');
+            $table->string('attachment')->nullable();
             $table->timestamps();
         });
     }

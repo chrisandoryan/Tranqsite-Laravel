@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,10 +22,8 @@ Route::prefix('/message')->group(function() {
     Route::get('/delete/{message}', [MessageController::class, 'destroy']);
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
-
-Route::get('/send', function () {
-    return view('send');
-});
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login_page');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [AuthController::class, 'showRegistration'])->name('registration_page');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

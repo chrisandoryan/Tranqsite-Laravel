@@ -32,13 +32,15 @@
             <div class="card">
                 <header class="card-header card-title-with-delete">
                     <div class="left-div">
-                        To: {{ $m->sender_id }}
+                        To: {{ $m->recipient->username }}
+                        <br />
+                        From: {{ $m->sender->username }}
                     </div>
                     <div class="right-div">
                         <a href="/message/delete/{{ $m->id }}"><button type="button" class="btn btn-error"><i class="fas fa-trash"></i></button></a>
                     </div>
                 </header>
-                <header class="card-header">{!! $m->title !!}</header>
+                <header class="card-header message-title">{!! $m->title !!}</header>
                 <div class="card-content">
                     <div class="inner">{!! $m->message !!}</div>
                 </div>

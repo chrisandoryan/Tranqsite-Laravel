@@ -20,10 +20,9 @@
             <fieldset class="form-group">
                 <label for="recipient">To:</label>
                 <select id="recipient" name="recipient_id" class="form-control">
-                    <option value="1">Administrator</option>
-                    <option value="2">Network Manager</option>
-                    <option value="3">IT Support</option>
-                    <option value="4">Coworker</option>
+                    @foreach ($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->username }}</option>
+                    @endforeach
                 </select>
             </fieldset>
             <fieldset class="form-group form-textarea">

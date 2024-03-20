@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
@@ -44,7 +45,8 @@ class MessageController extends Controller
     public function create(): View
     {
         //
-        return view('send');
+        $users = User::all();
+        return view('send', [ 'users' => $users ]);
     }
 
     /**
@@ -57,15 +59,10 @@ class MessageController extends Controller
     {
         //
         $message = new Message($request->except('_token'));
-        $message->sender_id = 1; // auth()->user()->id;
-        $message->attachment = "";
+        $message->sender_id = auth()->user()->id;
         $message->save();
 
-        return Redirect::route('view_messages')->with([
-            'success' => [
-                'Message has been sent!',
-            ]
-        ]);
+        return Redirect::route('view_messages')->withSuccess('Message has been sent!');
     }
 
     /**
@@ -113,10 +110,6 @@ class MessageController extends Controller
         //
         $message_id = $message->id;
         $message->delete();
-        return Redirect::route('view_messages')->with([
-            'success' => [
-                "Message with ID $message_id has been deleted.",
-            ]
-        ]);
+        return Redirect::route('view_messages')->withSuccess("Message with ID $message_id has been deleted.");
     }
 }

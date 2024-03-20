@@ -1,5 +1,3 @@
-@isset($success)
-@foreach ($success as $s)
-    <div class="alert alert-success">{{ $s }}</div>
-@endforeach
-@endisset
+@if(session('success'))
+    <div class="alert alert-success">{{session('success')}}</div>
+@endif
