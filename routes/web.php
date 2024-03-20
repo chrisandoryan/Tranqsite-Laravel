@@ -27,3 +27,6 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegistration'])->name('registration_page');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/profile/update/{id}', [AuthController::class, 'showProfile'])->name('update_profile_page');
+Route::post('/profile/update/{id}', [AuthController::class, 'updateProfile'])->name('update_profile');

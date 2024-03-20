@@ -17,6 +17,14 @@ class AuthController extends Controller
         return view('login');
     }
 
+    public function showProfile() 
+    {
+        $user = auth()->user();
+        return view('profile')->with([
+            "user" => $user
+        ]);
+    }
+
     public function showRegistration() 
     {
         return view('register');
@@ -27,7 +35,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect()->route('login')
             ->withSuccess('You have logged out successfully!');;
     }    
@@ -78,5 +86,12 @@ class AuthController extends Controller
             return Redirect::to('login')
                 ->withSuccess('You have successfully registered.');
         }
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = User::find($request->route('id'));
+        $user->update($request->all());
+        return redirect()->back()->withSuccess('Profile has been updated.');
     }
 }

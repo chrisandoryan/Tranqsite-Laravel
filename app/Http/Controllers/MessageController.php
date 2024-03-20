@@ -60,7 +60,6 @@ class MessageController extends Controller
     {
         //
         $message = new Message($request->except('_token'));
-        $message->sender_id = auth()->user()->id;
         $message->save();
 
         return Redirect::route('view_messages')->withSuccess('Message has been sent!');

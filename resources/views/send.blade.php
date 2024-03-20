@@ -12,6 +12,7 @@
 <body class="hack dark">
     <div class="grid main-form">
         <form class="form" method="POST" action="{{ route('send_message') }}">
+            <input type="hidden" name="sender_id" value="{{ Auth::user()->id }}" /> 
             <fieldset class="form-group">
                 <label for="username">Title:</label>
                 <input id="title" name="title" type="text" placeholder="" class="form-control">
