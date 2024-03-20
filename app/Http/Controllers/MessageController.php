@@ -22,19 +22,26 @@ class MessageController extends Controller
     public function index(FormRequest $request): View
     {
         //
+        $user_id = auth()->user()->id;
 
         if (isset($request->search)) {
             $query = $request->search_query;
             $column_name = $request->column;
-            $messages = Message::where(DB::raw("title LIKE '%$query%'"))
-                            ->orWhere(DB::raw("message LIKE '%$query%'"))
-                            ->orderBy($column_name)
-                            ->get();
+
+            $messages = Message::where(function($q) use($query) {
+                $q->where('title', 'like', "%$query%")
+                    ->orWhere('message', 'like', "%$query%");
+            })
+            ->where('sender_id', '=', $user_id)
+            ->orWhere('recipient_id', '=', $user_id)
+            ->get();
+
+        } else {
+            $messages = Message::where('sender_id', '=', $user_id)
+            ->orWhere('recipient_id', '=', $user_id)
+            ->get();
         }
-        else {
-            $messages = Message::all();
-        }
-        
+
         return view('messages', ['messages' => $messages]);
     }
 
@@ -47,7 +54,7 @@ class MessageController extends Controller
     {
         //
         $users = User::all();
-        return view('send', [ 'users' => $users ]);
+        return view('send', ['users' => $users]);
     }
 
     /**
@@ -56,11 +63,23 @@ class MessageController extends Controller
      * @param  \App\Http\Requests\StoreMessageRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMessageRequest $request) : RedirectResponse
+    public function store(StoreMessageRequest $request): RedirectResponse
     {
         //
-        $message = new Message($request->except('_token'));
-        $message->save();
+        // $message_object = new Message($request->except('_token'));
+
+        $message_object = new Message();
+        $message_object->title = $request->title;
+        $message_object->recipient_id = $request->recipient_id;
+
+        $content = $request->message;
+        // validate against XSS & HTML Injection
+        $content = htmlentities($content);
+
+        $message_object->message = $content;
+        $message_object->sender_id = auth()->user()->id;
+
+        $message_object->save();
 
         return Redirect::route('view_messages')->withSuccess('Message has been sent!');
     }
@@ -105,11 +124,17 @@ class MessageController extends Controller
      * @param  \App\Models\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Message $message) : RedirectResponse
+    public function destroy(Message $message): RedirectResponse
     {
         //
-        $message_id = $message->id;
-        $message->delete();
-        return Redirect::route('view_messages')->withSuccess("Message with ID $message_id has been deleted.");
+        if (auth()->user()->id == $message->sender->id) {
+            $message_id = $message->id;
+            $message->delete();
+
+            return Redirect::route('view_messages')->withSuccess("Message with ID $message_id has been deleted.");
+        } else {
+            return Redirect::route('view_messages')
+                ->withErrors("Message can't be deleted!");
+        }
     }
 }

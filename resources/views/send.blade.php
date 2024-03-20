@@ -21,7 +21,7 @@
                 <label for="recipient">To:</label>
                 <select id="recipient" name="recipient_id" class="form-control">
                     @foreach ($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->username }}</option>
+                        <option value="{{ $user->id }}">{{ $user->username }} ({{ $user->email }})</option>
                     @endforeach
                 </select>
             </fieldset>
