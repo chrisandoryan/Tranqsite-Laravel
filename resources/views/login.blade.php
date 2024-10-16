@@ -10,7 +10,7 @@
 
 <body class="hack dark">
 	<div class="grid main-form">
-		<form action="" method="POST" action="{{ route('login') }}">
+		<form action="" method="POST" action="">
             @csrf
 			<fieldset class="form-group form-success">
 				<label for="username">Username</label>

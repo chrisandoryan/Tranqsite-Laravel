@@ -10,7 +10,7 @@
 
 <body class="hack dark">
 	<div class="grid main-form">
-		<form method="POST" action="{{ route('register') }}" autocomplete="off">
+		<form method="POST" action="" autocomplete="off">
             @csrf
 			<input autocomplete="false" type="hidden" />
 			<fieldset class="form-group form-success">

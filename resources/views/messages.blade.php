@@ -11,7 +11,7 @@
 
 <body class="hack dark">
     <div class="grid main-form">
-        <form class="form" method="GET" action="{{ route('view_messages') }}" />
+        <form class="form" method="GET" action="" />
         <fieldset class="form-group">
             <label for="username">Search</label>
             <input id="search" name="search_query" type="text" placeholder="Enter search query..." class="form-control">
